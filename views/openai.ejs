@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        color: #333;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    tr:hover {
+        background-color: #ddd;
+    }
+</style>
+<body>
+    <h1>Search Results</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Part Type</th>
+                <th>Possible Part Number</th>
+                <th>manufacture</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% parts.forEach(part => { %>
+                <tr>
+                    <td><%= part.part_type %></td>
+                    <td>                 
+                        <a href="https://findchips.com/search/<%= part.part_number %>" target="_blank">
+                            <%= part.part_number %>
+                        </a>
+                    </td>
+                    <td><%= part.manufacturer %></td>
+                    
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

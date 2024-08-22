@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackthon Project - AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>Upload An Image of Electronic Component</h1>
+        <label for="imageInput" class="custom-file-upload">Choose Image ...</label>
+        <!-- <form id='image-form' enctype="multipart/form-data"> -->
+        <!-- <form id='image-form' enctype="multipart/form-data" method="POST" > -->
+        <form action='http://localhost:3000/upload2' enctype="multipart/form-data" method="POST" >
+            <input type="file" name="file" id="imageInput" accept="image/*">
+            <!-- <button id="uploadButton">Upload</button> -->
+            <button type="submit"> Upload </button>
+        </form>
+        
+        <div id="message"></div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Thumbnail</th>
+                        <th>Name</th>
+                        <th>Original Site</th>
+                        <th>FindChips</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (data) { %>
+                    <% data.forEach((item, i) => { %>
+                        <tr>
+                            <td><%= i+1  %></td>
+                            <td><a href="<%= item.link %>"><img src=<%=item.thumbnail %> width=50 height=50/></a></td>
+                            <td><%= item.title %></td>
+                            <td><%=item.source %></a></td>
+                            <td><a href="https://www.findchips.com/search/<%= item.title %>"><img height="50" width="120" src="https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_6d71163423ec095d778578cb30dabf0d/findchips.png"></a></td>
+                        </tr>
+                    <% }); %>
+                    <% };%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#image-form').submit(function(e){
+                e.preventDefault();
+
+                const input = $('#imageInput')[0];
+                const formData = new FormData();
+                formData.append('image', input.files[0]);
+
+                $.ajax({
+                    url: '/upload2',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,  // Prevent jQuery from overriding the Content-Type
+                    processData: false,
+                    success: function(response) {
+                        // Display the response from the server
+                        console.log(response);
+                        document.getElementById('message');
+
+                        $('#message').text(
+                            'Image uploaded successfully!'
+                        ).css('color', '#28a745')
+                    },
+                    error: function(xhr, status, error) {
+                        $('#message').text(
+                            'Error uploading image.'
+                        ).css('color', '#dc3545');
+                    }
+                });
+            })
+        })
+    </script>
+</body>
+</html>
